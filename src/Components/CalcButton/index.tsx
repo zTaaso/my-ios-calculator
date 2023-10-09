@@ -10,6 +10,7 @@ export interface CalcButtonPROPS extends TouchableHighlightProps {
   text: string
   textColor?: string
   isZero?: boolean
+  isActive?: boolean
 }
 
 const CalcButton: React.FC<CalcButtonPROPS> = ({ ...props }) => {
@@ -20,10 +21,18 @@ const CalcButton: React.FC<CalcButtonPROPS> = ({ ...props }) => {
   }, [props.type])
 
   return (
-    <S.Button underlayColor={underlayColor} activeOpacity={1} {...props}>
-      <S.StyledText color={props.textColor}>{props.text}</S.StyledText>
+    <S.Button
+      underlayColor={underlayColor}
+      delayPressIn={0}
+      delayPressOut={0}
+      activeOpacity={1}
+      {...props}
+    >
+      <S.StyledText color={props.textColor} isActive={props.isActive}>
+        {props.text}
+      </S.StyledText>
     </S.Button>
   )
 }
 
-export default CalcButton
+export default React.memo(CalcButton)

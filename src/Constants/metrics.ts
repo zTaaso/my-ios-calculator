@@ -1,3 +1,3 @@
 export const Metrics = {
-  buttonSize: 85,
+  buttonSize: 95,
 }

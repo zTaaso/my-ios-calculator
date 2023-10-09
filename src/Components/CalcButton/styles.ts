@@ -1,8 +1,8 @@
 import styled, { css } from 'styled-components/native'
 import { TouchableHighlight } from 'react-native'
 import type { CalcButtonPROPS } from '.'
-import { Colors } from '@/Constants'
-import { Metrics } from '@/Constants/metrics'
+import { Colors, Metrics } from '@/Constants'
+
 import { Text } from 'native-base'
 
 const doubledButtonSize = 195 // buttonSize * 2 + horizontal margin sizes
@@ -25,12 +25,19 @@ export const Button = styled(TouchableHighlight)<CalcButtonPROPS>`
     css`
       background-color: ${Colors.gray};
     `};
+
+  ${({ isActive }) =>
+    isActive &&
+    css`
+      background-color: ${Colors.white};
+    `};
 `
 
-export const StyledText = styled(Text)<{ color?: string }>`
+export const StyledText = styled(Text)<{ isActive?: boolean }>`
   text-align: center;
   font-size: 40px;
   line-height: 60px;
   text-align: center;
-  color: ${({ color }) => color ?? Colors.white};
+  color: ${({ color, isActive }) =>
+    isActive ? Colors.accent : color ?? Colors.white};
 `

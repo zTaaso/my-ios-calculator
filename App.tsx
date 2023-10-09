@@ -18,9 +18,9 @@ declare module 'native-base' {
   interface ICustomTheme extends MyThemeType {}
 }
 
-const App: React.FC = () => {
-  LogBox.ignoreLogs(['SSRProvider'])
+LogBox.ignoreLogs(['SSRProvider'])
 
+const App: React.FC = () => {
   return (
     <NativeBaseProvider theme={theme}>
       <StatusBar barStyle={'light-content'} />
