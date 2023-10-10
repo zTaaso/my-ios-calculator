@@ -1,11 +1,13 @@
 import { OperationSymbols } from '@/Constants'
-import { formatResult } from '@/Helpers'
+import { formatResult, getNumberResult } from '@/Helpers'
 import { useCallback, useState } from 'react'
 
+const MAX_LENGTH = 11
+
 let lastOperation = ''
+let lastValue = 0
 
 export const useCalculations = () => {
-  const [value, setValue] = useState(0)
   const [display, setDisplay] = useState('0')
   const [currOperation, setCurrOperation] = useState('')
 
@@ -17,65 +19,72 @@ export const useCalculations = () => {
 
   const concatDigit = useCallback(
     (digit: string) => {
-      if (display.length === 9) return
       const isOperating = currOperation !== ''
+
+      if (display.length >= MAX_LENGTH && !isOperating) return
 
       setCurrOperation('')
 
       const shouldConcat = display !== '0' && !isOperating
 
       if (shouldConcat) {
-        setDisplay(prevDisplay => prevDisplay + digit)
-        !lastOperation && setValue(Number(display + digit))
+        setDisplay(prevDisplay => formatResult(prevDisplay + digit))
         return
       }
 
-      !lastOperation && setValue(Number(display))
+      lastValue = getNumberResult(display)
       setDisplay(digit)
     },
     [display, currOperation],
   )
 
   const clearValue = useCallback(() => {
-    setValue(0)
+    lastValue = 0
     setDisplay('0')
     setCurrOperation('')
     lastOperation = ''
   }, [])
 
   const handleCalculate = useCallback(() => {
+    if (lastValue === 0) return
+
     const displayedValue = Number(display)
 
     let result = 0
 
     if (lastOperation === OperationSymbols.sum) {
-      result = displayedValue + value
+      result = displayedValue + lastValue
     }
 
     if (lastOperation === OperationSymbols.multiplication) {
-      result = displayedValue * value
+      result = displayedValue * lastValue
     }
 
     if (lastOperation === OperationSymbols.division) {
-      result = value / displayedValue
+      result = lastValue / displayedValue
     }
 
     if (lastOperation === OperationSymbols.subtraction) {
-      result = value - displayedValue
+      result = lastValue - displayedValue
     }
 
     setDisplay(formatResult(result))
-    setValue(result)
+    lastValue = result
 
     lastOperation = ''
-  }, [display, value])
+  }, [display])
 
   const activateOperation = useCallback(
     (operation: string) => {
       if (operation === OperationSymbols.inversion) {
         const displayedValue = -Number(display)
         setDisplay(String(displayedValue))
-        setValue(displayedValue)
+        return
+      }
+
+      if (operation === OperationSymbols.percentage) {
+        const displayedValue = Number(display) / 100
+        setDisplay(String(displayedValue))
         return
       }
 

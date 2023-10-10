@@ -23,6 +23,8 @@ interface ROW extends CalcButtonPROPS {
   fn: keyof CalculationFunctions
 }
 
+const MAX_FONT_SIZE = 100
+
 const MainCalculator: React.FC = () => {
   const {
     display,
@@ -35,7 +37,8 @@ const MainCalculator: React.FC = () => {
   } = useCalculations()
 
   const displaySize = useMemo(
-    () => (display.length > 5 ? 100 - display.length * 3 : 100),
+    () =>
+      display.length > 5 ? MAX_FONT_SIZE - display.length * 3 : MAX_FONT_SIZE,
     [display.length],
   )
 
@@ -78,7 +81,7 @@ const MainCalculator: React.FC = () => {
           textColor: Colors.black,
         },
         {
-          text: '%',
+          text: OperationSymbols.percentage,
           type: 'special',
           fn: 'operation',
           textColor: Colors.black,
