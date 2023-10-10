@@ -3,7 +3,12 @@ module.exports = {
     browser: true,
     es2021: true,
   },
-  extends: ['standard-with-typescript', 'plugin:react/recommended', 'prettier'],
+  extends: [
+    'standard-with-typescript',
+    'plugin:react/recommended',
+    'prettier',
+    'plugin:react-hooks/recommended',
+  ],
   overrides: [
     {
       env: {
@@ -19,8 +24,12 @@ module.exports = {
     ecmaVersion: 'latest',
     sourceType: 'module',
   },
-  plugins: ['react'],
+  plugins: ['react', 'react-hooks'],
   rules: {
     '@typescript-eslint/strict-boolean-expressions': 'off',
+    '@typescript-eslint/no-confusing-void-expression': 'off',
+    'react-hooks/exhaustive-deps': 1,
+    'react-hooks/rules-of-hooks': 'error',
+    '@typescript-eslint/explicit-function-return-type': 1,
   },
 }
